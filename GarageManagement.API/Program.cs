@@ -3,6 +3,7 @@ using System.Text;
 using GarageManagement.API.Data;
 using GarageManagement.API.Helpers;
 using GarageManagement.API.Middleware;
+using GarageManagement.API.Services.Background;
 using GarageManagement.API.Services;
 using GarageManagement.API.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -22,6 +23,9 @@ builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<ISalesService, SalesService>();
 builder.Services.AddScoped<IFinancialReportService, FinancialReportService>();
 builder.Services.AddScoped<JwtHelper>();
+builder.Services.AddSingleton<EmailHelper>();
+builder.Services.AddHostedService<LowStockNotificationService>();
+builder.Services.AddHostedService<PendingCreditReminderService>();
 
 var jwtSecret = builder.Configuration["JwtSettings:Secret"] ?? string.Empty;
 var jwtIssuer = builder.Configuration["JwtSettings:Issuer"];
