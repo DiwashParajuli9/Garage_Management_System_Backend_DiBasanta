@@ -20,6 +20,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<ISalesService, SalesService>();
+builder.Services.AddScoped<IFinancialReportService, FinancialReportService>();
 builder.Services.AddScoped<JwtHelper>();
 
 var jwtSecret = builder.Configuration["JwtSettings:Secret"] ?? string.Empty;
