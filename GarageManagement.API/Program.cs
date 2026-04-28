@@ -27,6 +27,15 @@ builder.Services.AddSingleton<EmailHelper>();
 builder.Services.AddHostedService<LowStockNotificationService>();
 builder.Services.AddHostedService<PendingCreditReminderService>();
 
+// F2 – Staff Management
+builder.Services.AddScoped<IStaffService, StaffService>();
+
+// F6 – Customer Registration
+builder.Services.AddScoped<ICustomerRegistrationService, CustomerRegistrationService>();
+
+// F9 – Customer Reports
+builder.Services.AddScoped<ICustomerReportService, CustomerReportService>();
+
 var jwtSecret = builder.Configuration["JwtSettings:Secret"] ?? string.Empty;
 var jwtIssuer = builder.Configuration["JwtSettings:Issuer"];
 var jwtAudience = builder.Configuration["JwtSettings:Audience"];
