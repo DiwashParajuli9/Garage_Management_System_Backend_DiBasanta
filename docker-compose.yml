@@ -19,7 +19,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Host=db;Database=garage_management;Username=admin;Password=password123
     ports:
-      - "5000:8080"
+      - "5008:8080"
     depends_on:
       - db
 
