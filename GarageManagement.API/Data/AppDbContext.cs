@@ -24,6 +24,9 @@ public class AppDbContext : DbContext
     public DbSet<Review> Reviews => Set<Review>();
     public DbSet<Notification> Notifications => Set<Notification>();
 
+    // F2 – Staff Management
+    public DbSet<Staff> Staff => Set<Staff>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
