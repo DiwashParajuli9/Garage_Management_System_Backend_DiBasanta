@@ -36,6 +36,10 @@ builder.Services.AddScoped<ICustomerRegistrationService, CustomerRegistrationSer
 // F9 – Customer Reports
 builder.Services.AddScoped<ICustomerReportService, CustomerReportService>();
 
+builder.Services.AddScoped<IVendorService, VendorService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<IInvoiceService, InvoiceService>();
+
 var jwtSecret = builder.Configuration["JwtSettings:Secret"] ?? string.Empty;
 var jwtIssuer = builder.Configuration["JwtSettings:Issuer"];
 var jwtAudience = builder.Configuration["JwtSettings:Audience"];

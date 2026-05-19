@@ -10,4 +10,5 @@ public interface ICustomerService
     Task<VehicleDto> UpdateVehicle(Guid customerId, Guid vehicleId, UpdateVehicleDto dto);
     Task DeleteVehicle(Guid customerId, Guid vehicleId);
     Task<List<VehicleDto>> GetMyVehicles(Guid customerId);
+    Task<List<InvoiceHistoryDto>> GetMyHistory(Guid customerId);
 }
