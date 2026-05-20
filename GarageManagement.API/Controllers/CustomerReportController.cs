@@ -75,4 +75,39 @@ public class CustomerReportController : ControllerBase
             return BadRequest(new { message = ex.Message });
         }
     }
+feature/diwash-F1-F7-F12-F15
+
+    // ── GET api/reports/customers/service-history ──────────────────────────
+    /// <summary>Returns customer service history (sales invoices).</summary>
+    [HttpGet("service-history")]
+    public async Task<IActionResult> GetCustomerServiceHistory([FromQuery] Guid? customerId = null)
+    {
+        try
+        {
+            var result = await _reportService.GetCustomerServiceHistoryAsync(customerId);
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+    }
+
+    // ── GET api/reports/customers/sales-invoices ───────────────────────────
+    /// <summary>Returns customer sales invoices.</summary>
+    [HttpGet("sales-invoices")]
+    public async Task<IActionResult> GetCustomerSalesInvoices([FromQuery] Guid? customerId = null)
+    {
+        try
+        {
+            var result = await _reportService.GetCustomerSalesInvoicesAsync(customerId);
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+    }
+
 }
+main
