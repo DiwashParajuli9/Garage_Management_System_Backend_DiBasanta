@@ -8,4 +8,5 @@ public interface ISalesService
     Task<List<SalesInvoiceResponseDto>> GetAllInvoices();
     Task<SalesInvoiceResponseDto> GetInvoiceById(Guid id);
     Task<SalesInvoiceResponseDto> MarkAsPaid(Guid invoiceId);
+    Task<bool> SendInvoiceEmailAsync(Guid invoiceId, string recipientEmail, string subject = "Your Invoice", string? message = null);
 }

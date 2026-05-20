@@ -27,6 +27,22 @@ builder.Services.AddSingleton<EmailHelper>();
 builder.Services.AddHostedService<LowStockNotificationService>();
 builder.Services.AddHostedService<PendingCreditReminderService>();
 
+// F2 – Staff Management
+builder.Services.AddScoped<IStaffService, StaffService>();
+
+// F6 – Customer Registration
+builder.Services.AddScoped<ICustomerRegistrationService, CustomerRegistrationService>();
+
+// F9 – Customer Reports
+builder.Services.AddScoped<ICustomerReportService, CustomerReportService>();
+
+// Staff Portal Services
+builder.Services.AddScoped<IStaffProfileService, StaffProfileService>();
+builder.Services.AddScoped<IStaffCustomerService, StaffCustomerService>();
+builder.Services.AddScoped<IAppointmentService, AppointmentService>();
+builder.Services.AddScoped<IPartRequestService, PartRequestService>();
+builder.Services.AddScoped<ICreditService, CreditService>();
+
 var jwtSecret = builder.Configuration["JwtSettings:Secret"] ?? string.Empty;
 var jwtIssuer = builder.Configuration["JwtSettings:Issuer"];
 var jwtAudience = builder.Configuration["JwtSettings:Audience"];
@@ -61,6 +77,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
+    options.CustomSchemaIds(type => type.FullName?.Replace("+", ".") ?? type.Name);
     options.SwaggerDoc("v1", new OpenApiInfo { Title = "GarageManagement.API", Version = "v1" });
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {

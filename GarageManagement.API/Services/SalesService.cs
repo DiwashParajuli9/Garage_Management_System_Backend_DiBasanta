@@ -1,4 +1,5 @@
 using GarageManagement.API.Data;
+using GarageManagement.API.Helpers;
 using GarageManagement.API.Models.DTOs.Sales;
 using GarageManagement.API.Models.Entities;
 using GarageManagement.API.Models.Entities.Enums;
@@ -10,10 +11,12 @@ namespace GarageManagement.API.Services;
 public class SalesService : ISalesService
 {
     private readonly AppDbContext _context;
+    private readonly EmailHelper _emailHelper;
 
-    public SalesService(AppDbContext context)
+    public SalesService(AppDbContext context, EmailHelper emailHelper)
     {
         _context = context;
+        _emailHelper = emailHelper;
     }
 
     public async Task<SalesInvoiceResponseDto> CreateSalesInvoice(Guid staffId, CreateSalesInvoiceDto dto)
@@ -173,6 +176,56 @@ public class SalesService : ISalesService
         await _context.SaveChangesAsync();
 
         return MapInvoice(invoice);
+    }
+
+    public async Task<bool> SendInvoiceEmailAsync(Guid invoiceId, string recipientEmail, string subject = "Your Invoice", string? message = null)
+    {
+        var invoice = await _context.SalesInvoices
+            .Include(i => i.Customer)
+            .Include(i => i.Items)
+            .ThenInclude(item => item.VehiclePart)
+            .FirstOrDefaultAsync(i => i.Id == invoiceId);
+
+        if (invoice is null)
+            throw new Exception("Invoice not found");
+
+        var body = message ?? BuildInvoiceEmailBody(invoice);
+
+        try
+        {
+            await _emailHelper.SendEmailAsync(recipientEmail, subject, body);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"Failed to send invoice email: {ex.Message}");
+        }
+    }
+
+    private string BuildInvoiceEmailBody(SalesInvoice invoice)
+    {
+        var itemsList = string.Join("\n", invoice.Items.Select(i => 
+            $"  - {i.VehiclePart.Name}: {i.Quantity} x {i.UnitPrice:C} = {i.Quantity * i.UnitPrice:C}"));
+
+        return $@"
+Dear {invoice.Customer.FullName},
+
+Thank you for your purchase. Here is your invoice details:
+
+Invoice Number: {invoice.InvoiceNumber ?? invoice.Id}
+Date: {invoice.CreatedAt:yyyy-MM-dd}
+
+Items:
+{itemsList}
+
+Subtotal: {invoice.TotalAmount:C}
+Discount: {(invoice.TotalAmount - invoice.FinalAmount):C}
+Total: {invoice.FinalAmount:C}
+
+Payment Status: {(invoice.IsPaid ? "Paid" : "Pending")}
+
+Thank you for your business!
+";
     }
 
     private static SalesInvoiceResponseDto MapInvoice(SalesInvoice invoice)

@@ -77,4 +77,19 @@ public class SalesController : ControllerBase
             return BadRequest(exception.Message);
         }
     }
+
+    [Authorize(Roles = "Staff,Admin")]
+    [HttpPost("{id:guid}/email")]
+    public async Task<IActionResult> SendInvoiceEmail(Guid id, [FromBody] SendInvoiceEmailDto dto)
+    {
+        try
+        {
+            var success = await _salesService.SendInvoiceEmailAsync(id, dto.RecipientEmail, dto.Subject, dto.Message);
+            return Ok(new { success, message = "Invoice email sent successfully" });
+        }
+        catch (Exception exception)
+        {
+            return BadRequest(new { message = exception.Message });
+        }
+    }
 }
