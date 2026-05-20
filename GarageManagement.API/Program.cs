@@ -46,6 +46,10 @@ builder.Services.AddScoped<ICreditService, CreditService>();
 builder.Services.AddScoped<IVendorService, VendorService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IInvoiceService, InvoiceService>();
+feature/aayush-F4-F8-F13
+builder.Services.AddScoped<IPurchaseInvoiceService, PurchaseInvoiceService>();
+
+main
 main
 
 var jwtSecret = builder.Configuration["JwtSettings:Secret"] ?? string.Empty;
