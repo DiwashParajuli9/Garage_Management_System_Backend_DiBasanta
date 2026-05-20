@@ -39,6 +39,7 @@ builder.Services.AddScoped<ICustomerReportService, CustomerReportService>();
 builder.Services.AddScoped<IVendorService, VendorService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IInvoiceService, InvoiceService>();
+builder.Services.AddScoped<IPurchaseInvoiceService, PurchaseInvoiceService>();
 
 var jwtSecret = builder.Configuration["JwtSettings:Secret"] ?? string.Empty;
 var jwtIssuer = builder.Configuration["JwtSettings:Issuer"];
