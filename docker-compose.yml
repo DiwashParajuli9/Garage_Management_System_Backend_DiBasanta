@@ -17,7 +17,11 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Host=db;Database=garage_management;Username=admin;Password=password123
     ports:
+feature/diwash-F1-F7-F12-F15
       - "5001:8080"
+
+      - "5008:8080"
+main
     depends_on:
       - db
 

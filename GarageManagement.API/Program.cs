@@ -36,12 +36,17 @@ builder.Services.AddScoped<ICustomerRegistrationService, CustomerRegistrationSer
 // F9 – Customer Reports
 builder.Services.AddScoped<ICustomerReportService, CustomerReportService>();
 
+feature/diwash-F1-F7-F12-F15
 // Staff Portal Services
 builder.Services.AddScoped<IStaffProfileService, StaffProfileService>();
 builder.Services.AddScoped<IStaffCustomerService, StaffCustomerService>();
 builder.Services.AddScoped<IAppointmentService, AppointmentService>();
 builder.Services.AddScoped<IPartRequestService, PartRequestService>();
 builder.Services.AddScoped<ICreditService, CreditService>();
+builder.Services.AddScoped<IVendorService, VendorService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<IInvoiceService, InvoiceService>();
+main
 
 var jwtSecret = builder.Configuration["JwtSettings:Secret"] ?? string.Empty;
 var jwtIssuer = builder.Configuration["JwtSettings:Issuer"];

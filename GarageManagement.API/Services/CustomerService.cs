@@ -110,6 +110,34 @@ public class CustomerService : ICustomerService
             .ToListAsync();
     }
 
+    public async Task<List<InvoiceHistoryDto>> GetMyHistory(Guid customerId)
+    {
+        var invoices = await _context.SalesInvoices
+            .Include(si => si.Staff)
+            .Include(si => si.Items)
+                .ThenInclude(item => item.VehiclePart)
+            .Where(si => si.CustomerId == customerId)
+            .OrderByDescending(si => si.CreatedAt)
+            .ToListAsync();
+
+        return invoices.Select(si => new InvoiceHistoryDto
+        {
+            Id = si.Id,
+            CreatedAt = si.CreatedAt,
+            TotalAmount = si.TotalAmount,
+            FinalAmount = si.FinalAmount,
+            IsPaid = si.IsPaid,
+            StaffName = si.Staff.FullName,
+            Items = si.Items.Select(item => new InvoiceItemDto
+            {
+                PartId = item.VehiclePartId,
+                PartName = item.VehiclePart.Name,
+                Quantity = item.Quantity,
+                UnitPrice = item.UnitPrice
+            }).ToList()
+        }).ToList();
+    }
+
     private static CustomerProfileDto MapCustomerProfile(User customer)
     {
         return new CustomerProfileDto

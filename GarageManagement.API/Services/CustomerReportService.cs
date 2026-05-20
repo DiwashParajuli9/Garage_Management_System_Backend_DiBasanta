@@ -70,6 +70,7 @@ public class CustomerReportService : ICustomerReportService
 
         return customers;
     }
+feature/diwash-F1-F7-F12-F15
 
     // ── Report 4: Customer service history ──────────────────────────────────
 
@@ -136,4 +137,6 @@ public class CustomerReportService : ICustomerReportService
 
         return invoices;
     }
+
+main
 }

@@ -75,6 +75,7 @@ public class CustomerReportController : ControllerBase
             return BadRequest(new { message = ex.Message });
         }
     }
+feature/diwash-F1-F7-F12-F15
 
     // ── GET api/reports/customers/service-history ──────────────────────────
     /// <summary>Returns customer service history (sales invoices).</summary>
@@ -107,3 +108,6 @@ public class CustomerReportController : ControllerBase
             return BadRequest(new { message = ex.Message });
         }
     }
+
+}
+main

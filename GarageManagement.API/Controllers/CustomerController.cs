@@ -107,6 +107,21 @@ public class CustomerController : ControllerBase
         }
     }
 
+    [HttpGet("history")]
+    public async Task<IActionResult> GetMyHistory()
+    {
+        try
+        {
+            var customerId = GetCustomerId();
+            var history = await _customerService.GetMyHistory(customerId);
+            return Ok(history);
+        }
+        catch (Exception exception)
+        {
+            return BadRequest(exception.Message);
+        }
+    }
+
     private Guid GetCustomerId()
     {
         var userIdStr = HttpContext.Items["UserId"]?.ToString();
