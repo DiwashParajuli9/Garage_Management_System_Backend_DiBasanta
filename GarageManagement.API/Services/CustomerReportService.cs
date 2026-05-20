@@ -70,4 +70,73 @@ public class CustomerReportService : ICustomerReportService
 
         return customers;
     }
+feature/diwash-F1-F7-F12-F15
+
+    // ── Report 4: Customer service history ──────────────────────────────────
+
+    public async Task<List<dynamic>> GetCustomerServiceHistoryAsync(Guid? customerId = null)
+    {
+        var query = _context.SalesInvoices.AsQueryable();
+
+        if (customerId.HasValue)
+        {
+            query = query.Where(i => i.CustomerId == customerId.Value);
+        }
+
+        var history = await query
+            .Include(i => i.Customer)
+            .OrderByDescending(i => i.CreatedAt)
+            .Select(i => new
+            {
+                InvoiceId = i.Id,
+                InvoiceNumber = i.InvoiceNumber,
+                CustomerId = i.CustomerId,
+                CustomerName = i.Customer.FullName,
+                ServiceDate = i.CreatedAt,
+                Amount = i.FinalAmount,
+                PaymentStatus = i.PaymentStatus,
+                ItemCount = i.Items.Count
+            })
+            .Cast<dynamic>()
+            .ToListAsync();
+
+        return history;
+    }
+
+    // ── Report 5: Customer sales invoices ───────────────────────────────────
+
+    public async Task<List<dynamic>> GetCustomerSalesInvoicesAsync(Guid? customerId = null)
+    {
+        var query = _context.SalesInvoices.AsQueryable();
+
+        if (customerId.HasValue)
+        {
+            query = query.Where(i => i.CustomerId == customerId.Value);
+        }
+
+        var invoices = await query
+            .Include(i => i.Customer)
+            .Include(i => i.Items)
+            .OrderByDescending(i => i.CreatedAt)
+            .Select(i => new
+            {
+                InvoiceId = i.Id,
+                InvoiceNumber = i.InvoiceNumber,
+                CustomerId = i.CustomerId,
+                CustomerName = i.Customer.FullName,
+                InvoiceDate = i.CreatedAt,
+                Subtotal = i.TotalAmount,
+                Discount = i.TotalAmount - i.FinalAmount,
+                Total = i.FinalAmount,
+                PaymentStatus = i.PaymentStatus,
+                IsPaid = i.IsPaid,
+                ItemCount = i.Items.Count
+            })
+            .Cast<dynamic>()
+            .ToListAsync();
+
+        return invoices;
+    }
+
+main
 }
